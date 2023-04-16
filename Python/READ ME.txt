@@ -1,0 +1,1 @@
+Program jest oparty o prosty skrypt w batchu, wywołujący plik python, tworzący backup utworzonych danych, oraz pokazujacy podstawowe informacje o projekcie 

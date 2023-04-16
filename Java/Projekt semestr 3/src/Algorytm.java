@@ -1,0 +1,81 @@
+public class Algorytm {
+//    int sum = 0;
+    int[] tab = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0};
+    public void wypisz() {  // funkcja wypisujaca tabelke
+        for(int i = 0; i<16; i++){
+            System.out.print(tab[i] + " ");
+            if (tab[i] < 10) System.out.print(" ");
+            if ((i+1)%4 == 0) System.out.println();
+        }
+    }
+
+    public boolean sprawdz(){  // funkcja sprawdzajaca czy tabelka jest wystarczajaco posortowana
+        // zakladam, ze wystarczajaco posortowana tabelka to taka, w ktorej dwie nastepne liczby leza obok siebie (np. 5, 6)
+        for (int i = 0; i < 15; i++) {
+            if (tab[i]+1 == tab[i+1]) return true;
+            if (tab[i]-1 == tab[i+1]) return true;
+            if (i < 11) {
+                if (tab[i]+1 == tab[i+4]) return true;
+                if (tab[i]-1 == tab[i+4]) return true;
+            }
+        }
+        return false;
+    }
+
+    public Algorytm(){
+        int index = 15;  // indeks pustego pola
+        int prev_index = 15;  // poprzedni indeks
+        int prev = 4;  // poprzedni kierunek
+        int prevprev =4;  // poprzedni poprzedni kierunek
+        int count = 0;  // licznik ruchow
+        int kierunek = 0;  // wylosowany kierunek
+
+        while (sprawdz()){
+            boolean git = false;
+            while (!git){
+                git = true;
+                kierunek = (int)(Math.random() * 4);  // losujemy kierunek
+                if (kierunek != prev  &&  kierunek == prevprev) prevprev = 4;
+                if (kierunek == prevprev) git = false;
+                if ((kierunek+2)%4 == prev) git = false;
+
+                if (git){
+                    prev_index = index;
+                    switch (kierunek) {
+                        case 0:  // w lewo
+                            if (index != 0 && index != 4 && index != 8 && index != 12) index -= 1;
+                            else git = false;
+                            break;
+                        case 1:  // w gore
+                            if (index != 0 && index != 1 && index != 2 && index != 3) index -= 4;
+                            else git = false;
+                            break;
+                        case 2:  // w prawo
+                            if (index != 3 && index != 7 && index != 11 && index != 15) index += 1;
+                            else git = false;
+                            break;
+                        case 3:  // w dol
+                            if (index != 12 && index != 13 && index != 14 && index != 15) index += 4;
+                            else git = false;
+                            break;
+                    }
+                    if (git){
+                        int temp = tab[prev_index];
+                        tab[prev_index] = tab[index];
+                        tab[index] = temp;
+                    }
+                }
+            }
+            prevprev = prev;
+            prev = kierunek;
+            count++;
+        }
+//        sum = count;
+        wypisz();
+        System.out.println("\nŻeby rozwiązać tabliczke potrzeba: " + count + " ruchów \n");
+    }
+
+//    public int srednia(){
+//        return sum;
+//    }
+}
